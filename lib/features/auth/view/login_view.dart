@@ -1,6 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:twitter_clone/common/rounded_small_button.dart';
 import 'package:twitter_clone/constants/ui_constants.dart';
 import 'package:twitter_clone/features/auth/widgets/auth_field.dart';
+import 'package:twitter_clone/theme/theme.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -43,8 +46,36 @@ class _LoginViewState extends State<LoginView> {
                   controller: passwordController,
                   hintText: "Password",
                 ),
+
+                const SizedBox(
+                  height: 25,
+                ),
+
                 // button
+                Align(
+                  alignment: Alignment.topRight,
+                  child: RoundedSmallButton(
+                    onTab: () {},
+                    label: "Done",
+                  ),
+                ),
+
+                const SizedBox(
+                  height: 25,
+                ),
+
                 // textspan
+                RichText(
+                    text: TextSpan(
+                        text: "Don't Have An Account?",
+                        style: const TextStyle(fontSize: 16),
+                        children: [
+                      TextSpan(
+                          text: ' Sign Up.',
+                          recognizer: TapGestureRecognizer()..onTap = () {},
+                          style: const TextStyle(
+                              color: Pallete.blueColor, fontSize: 16))
+                    ]))
               ],
             ),
           ),
