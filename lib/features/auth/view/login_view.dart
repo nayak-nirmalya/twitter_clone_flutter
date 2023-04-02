@@ -13,3 +13,12 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold();
   }
 }
+
+class ReUsableAppBar extends StatelessWidget {
+  const ReUsableAppBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar();
+  }
+}
