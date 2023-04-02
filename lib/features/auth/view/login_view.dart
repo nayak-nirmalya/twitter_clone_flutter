@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twitter_clone/constants/ui_constants.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -8,17 +9,25 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
-  }
-}
-
-class ReUsableAppBar extends StatelessWidget {
-  const ReUsableAppBar({super.key});
+  final appbar = UIConstants.appBar();
 
   @override
   Widget build(BuildContext context) {
-    return AppBar();
+    return Scaffold(
+      appBar: appbar,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              // textfield1
+              // textfield2
+              // button
+              // textspan
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
