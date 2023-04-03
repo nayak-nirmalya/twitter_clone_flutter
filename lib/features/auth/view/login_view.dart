@@ -57,7 +57,7 @@ class _LoginViewState extends State<LoginView> {
                 Align(
                   alignment: Alignment.topRight,
                   child: RoundedSmallButton(
-                    onTab: () {},
+                    onTap: () {},
                     label: "Done",
                   ),
                 ),

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:twitter_clone/theme/theme.dart';
 
 class RoundedSmallButton extends StatelessWidget {
-  final VoidCallback onTab;
+  final VoidCallback onTap;
   final Color backgroundColor;
   final Color textColor;
   final String label;
 
   const RoundedSmallButton(
       {super.key,
-      required this.onTab,
+      required this.onTap,
       required this.label,
       this.backgroundColor = Pallete.whiteColor,
       this.textColor = Pallete.backgroundColor});
