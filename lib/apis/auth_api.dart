@@ -11,29 +11,77 @@ final authAPIProvider = Provider((ref) {
 });
 
 abstract class IAuthAPI {
-  FutureEither<model.Account> signUp(
-      {required String email, required String password});
+  FutureEither<model.Account> signUp({
+    required String email,
+    required String password,
+  });
+
+  FutureEither<model.Session> login({
+    required String email,
+    required String password,
+  });
 }
 
 class AuthAPI implements IAuthAPI {
   final Account _account;
 
-  AuthAPI({required Account account}) : _account = account;
+  AuthAPI({
+    required Account account,
+  }) : _account = account;
 
   @override
-  FutureEither<model.Account> signUp(
-      {required String email, required String password}) async {
+  FutureEither<model.Account> signUp({
+    required String email,
+    required String password,
+  }) async {
     try {
       final account = await _account.create(
-          userId: ID.unique(), email: email, password: password);
+        userId: ID.unique(),
+        email: email,
+        password: password,
+      );
       return right(account);
     } on AppwriteException catch (e, stackTrace) {
       return left(
-        Failure(e.message ?? 'Some UnExpected Error Occured.', stackTrace),
+        Failure(
+          e.message ?? 'Some UnExpected Error Occured.',
+          stackTrace,
+        ),
       );
     } catch (e, stackTrace) {
       return left(
-        Failure(e.toString(), stackTrace),
+        Failure(
+          e.toString(),
+          stackTrace,
+        ),
+      );
+    }
+  }
+
+  @override
+  FutureEither<model.Session> login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final session = await _account.createEmailSession(
+        email: email,
+        password: password,
+      );
+      return right(session);
+    } on AppwriteException catch (e, stackTrace) {
+      return left(
+        Failure(
+          e.message ?? 'Some UnExpected Error Occured.',
+          stackTrace,
+        ),
+      );
+    } catch (e, stackTrace) {
+      return left(
+        Failure(
+          e.toString(),
+          stackTrace,
+        ),
       );
     }
   }
