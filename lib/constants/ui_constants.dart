@@ -8,6 +8,7 @@ class UIConstants {
     return AppBar(
       title: SvgPicture.asset(
         AssetsConstants.twitterLogo,
+        // ignore: deprecated_member_use
         color: Pallete.blueColor,
         height: 30,
       ),

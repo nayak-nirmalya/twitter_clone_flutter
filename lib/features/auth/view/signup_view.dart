@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:twitter_clone/common/loading_page.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/features/auth/view/login_view.dart';
 import 'package:twitter_clone/theme/theme.dart';
@@ -37,64 +38,69 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(authControllerProvider);
+
     return Scaffold(
       appBar: appbar,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                // textfield1
-                AuthField(controller: emailController, hintText: "E-Mail"),
+      body: isLoading
+          ? const Loader()
+          : Center(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      // textfield1
+                      AuthField(
+                          controller: emailController, hintText: "E-Mail"),
 
-                const SizedBox(
-                  height: 25,
-                ),
+                      const SizedBox(
+                        height: 25,
+                      ),
 
-                // textfield2
-                AuthField(
-                  controller: passwordController,
-                  hintText: "Password",
-                ),
+                      // textfield2
+                      AuthField(
+                        controller: passwordController,
+                        hintText: "Password",
+                      ),
 
-                const SizedBox(
-                  height: 25,
-                ),
+                      const SizedBox(
+                        height: 25,
+                      ),
 
-                // button
-                Align(
-                  alignment: Alignment.topRight,
-                  child: RoundedSmallButton(
-                    onTap: onSignUp,
-                    label: "Done",
+                      // button
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: RoundedSmallButton(
+                          onTap: onSignUp,
+                          label: "Done",
+                        ),
+                      ),
+
+                      const SizedBox(
+                        height: 25,
+                      ),
+
+                      // textspan
+                      RichText(
+                          text: TextSpan(
+                              text: "Already Have An Account?",
+                              style: const TextStyle(fontSize: 16),
+                              children: [
+                            TextSpan(
+                                text: ' Log In.',
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(context, LoginView.route());
+                                  },
+                                style: const TextStyle(
+                                    color: Pallete.blueColor, fontSize: 16))
+                          ]))
+                    ],
                   ),
                 ),
-
-                const SizedBox(
-                  height: 25,
-                ),
-
-                // textspan
-                RichText(
-                    text: TextSpan(
-                        text: "Already Have An Account?",
-                        style: const TextStyle(fontSize: 16),
-                        children: [
-                      TextSpan(
-                          text: ' Log In.',
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.push(context, LoginView.route());
-                            },
-                          style: const TextStyle(
-                              color: Pallete.blueColor, fontSize: 16))
-                    ]))
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }
