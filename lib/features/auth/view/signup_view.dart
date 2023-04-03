@@ -52,7 +52,9 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                     children: [
                       // textfield1
                       AuthField(
-                          controller: emailController, hintText: "E-Mail"),
+                        controller: emailController,
+                        hintText: "E-Mail",
+                      ),
 
                       const SizedBox(
                         height: 25,
@@ -85,16 +87,24 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                       RichText(
                           text: TextSpan(
                               text: "Already Have An Account?",
-                              style: const TextStyle(fontSize: 16),
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
                               children: [
                             TextSpan(
-                                text: ' Log In.',
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.push(context, LoginView.route());
-                                  },
-                                style: const TextStyle(
-                                    color: Pallete.blueColor, fontSize: 16))
+                              text: ' Log In.',
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.push(
+                                    context,
+                                    LoginView.route(),
+                                  );
+                                },
+                              style: const TextStyle(
+                                color: Pallete.blueColor,
+                                fontSize: 16,
+                              ),
+                            )
                           ]))
                     ],
                   ),
