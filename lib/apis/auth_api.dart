@@ -1,3 +1,7 @@
-abstract class IAuthAPI {}
+import 'package:appwrite/appwrite.dart';
+import 'package:twitter_clone/core/core.dart';
 
-class AuthAPI implements IAuthAPI {}
+abstract class IAuthAPI {
+  FutureEither<Account> signUp(
+      {required String email, required String password});
+}
