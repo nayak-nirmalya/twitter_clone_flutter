@@ -20,10 +20,23 @@ abstract class IAuthAPI {
     required String email,
     required String password,
   });
+
+  Future<model.Account?> currentUserAccount();
 }
 
 class AuthAPI implements IAuthAPI {
   final Account _account;
+
+  @override
+  Future<model.Account?> currentUserAccount() async {
+    try {
+      return await _account.get();
+    } on AppwriteException catch (e) {
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
 
   AuthAPI({
     required Account account,
