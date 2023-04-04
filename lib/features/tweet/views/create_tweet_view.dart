@@ -16,6 +16,14 @@ class CreateTweetScreen extends ConsumerStatefulWidget {
 }
 
 class CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
+  final tweetTextController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    tweetTextController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserDetailsProvider).value;
@@ -43,11 +51,32 @@ class CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
                   children: [
                     Row(
                       children: [
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                        ),
                         CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            currentUser.profilePic,
+                          backgroundImage: NetworkImage(currentUser.profilePic),
+                          radius: 30,
+                        ),
+                        const SizedBox(width: 15),
+                        Expanded(
+                          child: TextField(
+                            controller: tweetTextController,
+                            style: const TextStyle(
+                              fontSize: 22,
+                            ),
+                            decoration: const InputDecoration(
+                              hintText: "What's Happening?",
+                              hintStyle: TextStyle(
+                                color: Pallete.greyColor,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                            maxLines: null,
                           ),
-                        )
+                        ),
                       ],
                     )
                   ],
