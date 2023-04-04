@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter_clone/common/common.dart';
+import 'package:twitter_clone/constants/assets_constants.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
@@ -51,12 +53,13 @@ class CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
                   children: [
                     Row(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                        ),
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(currentUser.profilePic),
-                          radius: 30,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CircleAvatar(
+                            backgroundImage:
+                                NetworkImage(currentUser.profilePic),
+                            radius: 30,
+                          ),
                         ),
                         const SizedBox(width: 15),
                         Expanded(
@@ -83,6 +86,31 @@ class CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
                 ),
               ),
             ),
+      bottomNavigationBar: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0).copyWith(
+              left: 15,
+              right: 15,
+            ),
+            child: SvgPicture.asset(AssetsConstants.galleryIcon),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0).copyWith(
+              left: 15,
+              right: 15,
+            ),
+            child: SvgPicture.asset(AssetsConstants.gifIcon),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0).copyWith(
+              left: 15,
+              right: 15,
+            ),
+            child: SvgPicture.asset(AssetsConstants.emojiIcon),
+          ),
+        ],
+      ),
     );
   }
 }
