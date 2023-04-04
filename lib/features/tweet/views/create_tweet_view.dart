@@ -33,7 +33,9 @@ class CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           icon: const Icon(Icons.close, size: 30),
         ),
         actions: [
@@ -86,30 +88,44 @@ class CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
                 ),
               ),
             ),
-      bottomNavigationBar: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0).copyWith(
-              left: 15,
-              right: 15,
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.only(bottom: 2),
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: Pallete.greyColor,
+              width: 0.3,
             ),
-            child: SvgPicture.asset(AssetsConstants.galleryIcon),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0).copyWith(
-              left: 15,
-              right: 15,
+        ),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0).copyWith(
+                top: 12,
+                left: 15,
+                right: 15,
+              ),
+              child: SvgPicture.asset(AssetsConstants.galleryIcon),
             ),
-            child: SvgPicture.asset(AssetsConstants.gifIcon),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0).copyWith(
-              left: 15,
-              right: 15,
+            Padding(
+              padding: const EdgeInsets.all(8.0).copyWith(
+                top: 12,
+                left: 15,
+                right: 15,
+              ),
+              child: SvgPicture.asset(AssetsConstants.gifIcon),
             ),
-            child: SvgPicture.asset(AssetsConstants.emojiIcon),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(8.0).copyWith(
+                top: 12,
+                left: 15,
+                right: 15,
+              ),
+              child: SvgPicture.asset(AssetsConstants.emojiIcon),
+            ),
+          ],
+        ),
       ),
     );
   }
