@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:twitter_clone/apis/storage_api.dart';
 import 'package:twitter_clone/apis/tweet_api.dart';
 import 'package:twitter_clone/core/enums/tweet_type_enum.dart';
 
@@ -14,17 +15,21 @@ final tweetControllerProvider =
   return TweetController(
     ref: ref,
     tweetAPI: ref.watch(tweetAPIProvider),
+    storageAPI: ref.watch(storageAPIProvider),
   );
 });
 
 class TweetController extends StateNotifier<bool> {
   final TweetAPI _tweetAPI;
+  final StorageAPI _storageAPI;
   final Ref _ref;
   TweetController({
     required Ref ref,
     required TweetAPI tweetAPI,
+    required StorageAPI storageAPI,
   })  : _ref = ref,
         _tweetAPI = tweetAPI,
+        _storageAPI = storageAPI,
         super(false);
 
   void shareTweet({
@@ -59,13 +64,14 @@ class TweetController extends StateNotifier<bool> {
     final hashTags = _getHashTagsFromText(text);
     String link = _getLinkFromText(text);
     final user = _ref.read(currentUserDetailsProvider).value!;
+    final imageLinks = await _storageAPI.uploadImages(images);
 
     Tweet tweet = Tweet(
       id: '',
       text: text,
       hashTags: hashTags,
       link: link,
-      imageLinks: const [],
+      imageLinks: imageLinks,
       uid: user.uid,
       tweetType: TweetType.image,
       tweetedAt: DateTime.now(),

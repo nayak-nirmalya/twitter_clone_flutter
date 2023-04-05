@@ -29,7 +29,9 @@ class StorageAPI {
         ),
       );
 
-      imageLinks.add(uploadedImage.$id);
+      imageLinks.add(
+        uploadedImage.$id,
+      );
     }
     return imageLinks;
   }
