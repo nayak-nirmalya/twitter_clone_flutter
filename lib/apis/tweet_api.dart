@@ -7,25 +7,31 @@ import 'package:twitter_clone/core/core.dart';
 import 'package:twitter_clone/core/providers.dart';
 import 'package:twitter_clone/models/tweet_model.dart';
 
+final tweetAPIProvider = Provider((ref) {
+  return TweetAPI(
+    db: ref.watch(appwriteDatabaseProvider),
+  );
+});
+
 abstract class ITweetAPI {
   FutureEither<Document> shareTweet(Tweet tweet);
 }
 
 class TweetAPI implements ITweetAPI {
-    final Databases _db;
+  final Databases _db;
   TweetAPI({required Databases db}) : _db = db;
 
   @override
   FutureEither<Document> shareTweet(Tweet tweet) async {
     try {
-      await _db.createDocument(
+      final doc = await _db.createDocument(
         databaseId: AppwriteConstants.databaseId,
-        collectionId: AppwriteConstants.usersCollection,
-        documentId: ,
-        data: userModel.toMap(),
+        collectionId: AppwriteConstants.tweetsCollection,
+        documentId: ID.unique(),
+        data: tweet.toMap(),
       );
 
-      return right(null);
+      return right(doc);
     } on AppwriteException catch (e, st) {
       return left(
         Failure(

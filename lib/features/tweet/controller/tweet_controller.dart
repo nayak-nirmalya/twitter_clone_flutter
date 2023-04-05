@@ -2,16 +2,29 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:twitter_clone/apis/tweet_api.dart';
 import 'package:twitter_clone/core/enums/tweet_type_enum.dart';
 
 import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/models/tweet_model.dart';
 
+final tweetControllerProvider =
+    StateNotifierProvider<TweetController, bool>((ref) {
+  return TweetController(
+    ref: ref,
+    tweetAPI: ref.watch(tweetAPIProvider),
+  );
+});
+
 class TweetController extends StateNotifier<bool> {
+  final TweetAPI _tweetAPI;
   final Ref _ref;
-  TweetController({required Ref ref})
-      : _ref = ref,
+  TweetController({
+    required Ref ref,
+    required TweetAPI tweetAPI,
+  })  : _ref = ref,
+        _tweetAPI = tweetAPI,
         super(false);
 
   void shareTweet({
@@ -46,7 +59,7 @@ class TweetController extends StateNotifier<bool> {
   void _shareTextTweet({
     required String text,
     required BuildContext context,
-  }) {
+  }) async {
     state = true;
     final hashTags = _getHashTagsFromText(text);
     String link = _getLinkFromText(text);
@@ -57,14 +70,18 @@ class TweetController extends StateNotifier<bool> {
       text: text,
       hashTags: hashTags,
       link: link,
-      imageLinks: [],
+      imageLinks: const [],
       uid: user.uid,
       tweetType: TweetType.text,
       tweetedAt: DateTime.now(),
-      likes: [],
-      commentIds: [],
+      likes: const [],
+      commentIds: const [],
       reShareCount: 0,
     );
+
+    final res = await _tweetAPI.shareTweet(tweet);
+    state = false;
+    res.fold((l) => showSnackBar(context, l.message), (r) => null);
   }
 
   String _getLinkFromText(String text) {
