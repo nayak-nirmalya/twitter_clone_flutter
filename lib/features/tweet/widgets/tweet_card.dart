@@ -75,7 +75,7 @@ class TweetCard extends ConsumerWidget {
                             AnyLinkPreview(
                               displayDirection:
                                   UIDirection.uiDirectionHorizontal,
-                              link: 'https://${tweet.link}',
+                              link: 'https://${tweet.link.toLowerCase()}',
                             ),
                           ],
                           Container(
@@ -113,7 +113,7 @@ class TweetCard extends ConsumerWidget {
                                   onPressed: () {},
                                   icon: const Icon(
                                     Icons.share_outlined,
-                                    size: 25,
+                                    size: 18,
                                     color: Pallete.greyColor,
                                   ),
                                 ),
