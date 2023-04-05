@@ -10,6 +10,7 @@ class TweetList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(getTweetsProvider).when(
           data: (tweets) {
+            print(tweets);
             return ListView.builder(
               itemCount: tweets.length,
               itemBuilder: (BuildContext context, int index) {
