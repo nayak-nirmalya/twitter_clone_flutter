@@ -60,7 +60,6 @@ class Tweet {
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
-    result.addAll({'id': id});
     result.addAll({'text': text});
     result.addAll({'hashTags': hashTags});
     result.addAll({'link': link});
@@ -77,7 +76,7 @@ class Tweet {
 
   factory Tweet.fromMap(Map<String, dynamic> map) {
     return Tweet(
-      id: map['id'] ?? '',
+      id: map['\$id'] ?? '',
       text: map['text'] ?? '',
       hashTags: List<String>.from(map['hashTags']),
       link: map['link'] ?? '',

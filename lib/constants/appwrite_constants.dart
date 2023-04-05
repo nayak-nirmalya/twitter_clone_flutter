@@ -5,4 +5,5 @@ class AppwriteConstants {
   // static const String endPoint = "http://localhost:80/v1";
 
   static const String usersCollection = "642bcd918108cf817bf8";
+  static const String tweetsCollection = "642d0d2216217ea6b753";
 }
