@@ -54,7 +54,30 @@ class TweetController extends StateNotifier<bool> {
     required List<File> images,
     required String text,
     required BuildContext context,
-  }) {}
+  }) async {
+    state = true;
+    final hashTags = _getHashTagsFromText(text);
+    String link = _getLinkFromText(text);
+    final user = _ref.read(currentUserDetailsProvider).value!;
+
+    Tweet tweet = Tweet(
+      id: '',
+      text: text,
+      hashTags: hashTags,
+      link: link,
+      imageLinks: const [],
+      uid: user.uid,
+      tweetType: TweetType.image,
+      tweetedAt: DateTime.now(),
+      likes: const [],
+      commentIds: const [],
+      reShareCount: 0,
+    );
+
+    final res = await _tweetAPI.shareTweet(tweet);
+    state = false;
+    res.fold((l) => showSnackBar(context, l.message), (r) => null);
+  }
 
   void _shareTextTweet({
     required String text,

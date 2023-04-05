@@ -6,4 +6,6 @@ class AppwriteConstants {
 
   static const String usersCollection = "642bcd918108cf817bf8";
   static const String tweetsCollection = "642d0d2216217ea6b753";
+
+  static const String imagesBucket = "642d18a59355a7af11d5";
 }
