@@ -20,6 +20,7 @@ class TweetCard extends ConsumerWidget {
             return Column(
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       margin: const EdgeInsets.all(10),
@@ -63,6 +64,11 @@ class TweetCard extends ConsumerWidget {
                           ),
                           if (tweet.tweetType == TweetType.image)
                             CarouselImage(imageLinks: tweet.imageLinks)
+                          
+                          if (tweet.link.isNotEmpty) ...[
+                            const SizedBox(height: 4,),
+                            
+                          ]
                         ],
                       ),
                     ),
