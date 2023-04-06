@@ -83,6 +83,7 @@ class TweetController extends StateNotifier<bool> {
         tweet = tweet.copyWith(
           id: ID.unique(),
           reShareCount: 0,
+          tweetedAt: DateTime.now(),
         );
         final res2 = await _tweetAPI.shareTweet(tweet);
 
