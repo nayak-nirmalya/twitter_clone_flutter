@@ -21,6 +21,7 @@ abstract class ITweetAPI {
   FutureEither<Document> likeTweet(Tweet tweet);
   FutureEither<Document> updateReShareCount(Tweet tweet);
   Future<List<Document>> getRepliesToTweet(Tweet tweet);
+  Future<Document> getTweetById(String id);
 }
 
 class TweetAPI implements ITweetAPI {
@@ -152,5 +153,14 @@ class TweetAPI implements ITweetAPI {
     );
 
     return documents.documents;
+  }
+
+  @override
+  Future<Document> getTweetById(String id) async {
+    return _db.getDocument(
+      databaseId: AppwriteConstants.databaseId,
+      collectionId: AppwriteConstants.tweetsCollection,
+      documentId: id,
+    );
   }
 }

@@ -94,13 +94,29 @@ class TweetCard extends ConsumerWidget {
                                     ),
                                   ],
                                 ),
-                                // replied to
+                                if (tweet.repliedTo.isNotEmpty)
+                                  RichText(
+                                    text: TextSpan(
+                                      text: 'Replying to',
+                                      style: const TextStyle(
+                                        color: Pallete.greyColor,
+                                        fontSize: 16,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                      text: '@',
+                                      style: const TextStyle(
+                                        color: Pallete.greyColor,
+                                        fontSize: 16,
+                                      ),
+                                      ],
+                                    ),
+                                  ),
                                 HashTagText(
                                   text: tweet.text,
                                 ),
                                 if (tweet.tweetType == TweetType.image)
                                   CarouselImage(imageLinks: tweet.imageLinks),
-
                                 if (tweet.link.isNotEmpty) ...[
                                   const SizedBox(
                                     height: 4,
@@ -182,7 +198,8 @@ class TweetCard extends ConsumerWidget {
                                             (likeCount, isLiked, text) {
                                           return Padding(
                                             padding: const EdgeInsets.only(
-                                                left: 2.0),
+                                              left: 2.0,
+                                            ),
                                             child: Text(
                                               text,
                                               style: TextStyle(
