@@ -110,11 +110,13 @@ class TweetController extends StateNotifier<bool> {
         images: images,
         text: text,
         context: context,
+        repliedTo: repliedTo,
       );
     } else {
       _shareTextTweet(
         text: text,
         context: context,
+        repliedTo: repliedTo,
       );
     }
   }
@@ -144,6 +146,7 @@ class TweetController extends StateNotifier<bool> {
       commentIds: const [],
       reShareCount: 0,
       reTweetedBy: '',
+      repliedTo: repliedTo,
     );
 
     final res = await _tweetAPI.shareTweet(tweet);
@@ -174,6 +177,7 @@ class TweetController extends StateNotifier<bool> {
       commentIds: const [],
       reShareCount: 0,
       reTweetedBy: '',
+      repliedTo: repliedTo,
     );
 
     final res = await _tweetAPI.shareTweet(tweet);
