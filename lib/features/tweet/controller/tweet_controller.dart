@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:js';
 
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/apis/storage_api.dart';
@@ -66,12 +68,31 @@ class TweetController extends StateNotifier<bool> {
   void reShareTweet(
     Tweet tweet,
     UserModel currentUser,
-    BuildContext buildContext,
+    BuildContext context,
   ) async {
-    tweet = tweet.copyWith(likes: likes);
+    tweet = tweet.copyWith(
+      reTweetedBy: currentUser.name,
+      likes: [],
+      commentIds: [],
+      reShareCount: tweet.reShareCount + 1,
+    );
     final res = await _tweetAPI.updateReShareCount(tweet);
 
-    res.fold((l) => null, (r) => null);
+    res.fold(
+      (l) => showSnackBar(context, l.message),
+      (r) async {
+        tweet = tweet.copyWith(
+          id: ID.unique(),
+          reShareCount: 0,
+        );
+        final res2 = await _tweetAPI.shareTweet(tweet);
+
+        res2.fold(
+          (l) => showSnackBar(context, l.message),
+          (r) => null,
+        );
+      },
+    );
   }
 
   void shareTweet({
@@ -120,6 +141,7 @@ class TweetController extends StateNotifier<bool> {
       likes: const [],
       commentIds: const [],
       reShareCount: 0,
+      reTweetedBy: '',
     );
 
     final res = await _tweetAPI.shareTweet(tweet);
@@ -148,6 +170,7 @@ class TweetController extends StateNotifier<bool> {
       likes: const [],
       commentIds: const [],
       reShareCount: 0,
+      reTweetedBy: '',
     );
 
     final res = await _tweetAPI.shareTweet(tweet);
