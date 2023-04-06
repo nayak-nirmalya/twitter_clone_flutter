@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:js';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/widgets.dart';
@@ -89,7 +88,7 @@ class TweetController extends StateNotifier<bool> {
 
         res2.fold(
           (l) => showSnackBar(context, l.message),
-          (r) => null,
+          (r) => showSnackBar(context, "ReTweeted!"),
         );
       },
     );
