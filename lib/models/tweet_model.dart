@@ -16,6 +16,8 @@ class Tweet {
   final List<String> commentIds;
   final int reShareCount;
   final String reTweetedBy;
+  final String repliedTo;
+
   const Tweet({
     required this.id,
     required this.text,
@@ -29,6 +31,7 @@ class Tweet {
     required this.commentIds,
     required this.reShareCount,
     required this.reTweetedBy,
+    required this.repliedTo,
   });
 
   Tweet copyWith({
@@ -44,6 +47,7 @@ class Tweet {
     List<String>? commentIds,
     int? reShareCount,
     String? reTweetedBy,
+    String? repliedTo,
   }) {
     return Tweet(
       id: id ?? this.id,
@@ -58,6 +62,7 @@ class Tweet {
       commentIds: commentIds ?? this.commentIds,
       reShareCount: reShareCount ?? this.reShareCount,
       reTweetedBy: reTweetedBy ?? this.reTweetedBy,
+      repliedTo: repliedTo ?? this.repliedTo,
     );
   }
 
@@ -75,6 +80,7 @@ class Tweet {
     result.addAll({'commentIds': commentIds});
     result.addAll({'reShareCount': reShareCount});
     result.addAll({'reTweetedBy': reTweetedBy});
+    result.addAll({'repliedTo': repliedTo});
 
     return result;
   }
@@ -93,12 +99,13 @@ class Tweet {
       commentIds: List<String>.from(map['commentIds']),
       reShareCount: map['reShareCount']?.toInt() ?? 0,
       reTweetedBy: map['reTweetedBy'] ?? '',
+      repliedTo: map['repliedTo'] ?? '',
     );
   }
 
   @override
   String toString() {
-    return 'Tweet(id: $id, text: $text, hashTags: $hashTags, link: $link, imageLinks: $imageLinks, uid: $uid, tweetType: $tweetType, tweetedAt: $tweetedAt, likes: $likes, commentIds: $commentIds, reShareCount: $reShareCount, reTweetedBy: $reTweetedBy,)';
+    return 'Tweet(id: $id, text: $text, hashTags: $hashTags, link: $link, imageLinks: $imageLinks, uid: $uid, tweetType: $tweetType, tweetedAt: $tweetedAt, likes: $likes, commentIds: $commentIds, reShareCount: $reShareCount, reTweetedBy: $reTweetedBy, repliedTo: $repliedTo,)';
   }
 
   @override
@@ -117,7 +124,8 @@ class Tweet {
         listEquals(other.likes, likes) &&
         listEquals(other.commentIds, commentIds) &&
         other.reShareCount == reShareCount &&
-        other.reTweetedBy == reTweetedBy;
+        other.reTweetedBy == reTweetedBy &&
+        other.repliedTo == repliedTo;
   }
 
   @override
@@ -133,6 +141,7 @@ class Tweet {
         likes.hashCode ^
         commentIds.hashCode ^
         reShareCount.hashCode ^
-        reTweetedBy.hashCode;
+        reTweetedBy.hashCode ^
+        repliedTo.hashCode;
   }
 }

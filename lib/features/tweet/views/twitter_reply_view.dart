@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:twitter_clone/features/tweet/controller/tweet_controller.dart';
 import 'package:twitter_clone/features/tweet/widgets/tweet_card.dart';
 import 'package:twitter_clone/models/tweet_model.dart';
 
 class TwitterReplyScreen extends ConsumerWidget {
+  static route(Tweet tweet) => MaterialPageRoute(
+        builder: (context) => TwitterReplyScreen(
+          tweet: tweet,
+        ),
+      );
   final Tweet tweet;
   const TwitterReplyScreen({
     super.key,
@@ -20,6 +26,18 @@ class TwitterReplyScreen extends ConsumerWidget {
         children: [
           TweetCard(tweet: tweet),
         ],
+      ),
+      bottomNavigationBar: TextField(
+        onSubmitted: (value) {
+          ref.read(tweetControllerProvider.notifier).shareTweet(
+            images: [],
+            text: value,
+            context: context,
+          );
+        },
+        decoration: const InputDecoration(
+          hintText: "Tweet Your Reply.",
+        ),
       ),
     );
   }

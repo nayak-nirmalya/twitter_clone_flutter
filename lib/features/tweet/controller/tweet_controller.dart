@@ -99,6 +99,7 @@ class TweetController extends StateNotifier<bool> {
     required List<File> images,
     required String text,
     required BuildContext context,
+    required String repliedTo,
   }) {
     if (text.isEmpty) {
       showSnackBar(context, "Please, Enter Something!");
@@ -122,6 +123,7 @@ class TweetController extends StateNotifier<bool> {
     required List<File> images,
     required String text,
     required BuildContext context,
+    required String repliedTo,
   }) async {
     state = true;
     final hashTags = _getHashTagsFromText(text);
@@ -152,6 +154,7 @@ class TweetController extends StateNotifier<bool> {
   void _shareTextTweet({
     required String text,
     required BuildContext context,
+    required String repliedTo,
   }) async {
     state = true;
     final hashTags = _getHashTagsFromText(text);
