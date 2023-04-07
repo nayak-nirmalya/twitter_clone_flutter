@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:like_button/like_button.dart';
 import 'package:twitter_clone/common/common.dart';
+import 'package:twitter_clone/constants/appwrite_constants.dart';
 import 'package:twitter_clone/constants/assets_constants.dart';
 import 'package:twitter_clone/core/enums/tweet_type_enum.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
@@ -43,7 +44,9 @@ class TweetCard extends ConsumerWidget {
                           Container(
                             margin: const EdgeInsets.all(10),
                             child: CircleAvatar(
-                              backgroundImage: NetworkImage(user.profilePic),
+                              backgroundImage: NetworkImage(
+                                AppwriteConstants.imageUrl(user.profilePic),
+                              ),
                               radius: 35,
                             ),
                           ),

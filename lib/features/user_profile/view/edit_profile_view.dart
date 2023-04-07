@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
+import 'package:twitter_clone/constants/appwrite_constants.dart';
 import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/features/user_profile/controller/user_profile_controller.dart';
@@ -118,7 +119,9 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
                                     : userModel.bannerPic.isEmpty
                                         ? Container(color: Pallete.blueColor)
                                         : Image.network(
-                                            userModel.bannerPic,
+                                            AppwriteConstants.imageUrl(
+                                              userModel.bannerPic,
+                                            ),
                                             fit: BoxFit.fitWidth,
                                           ),
                               ),
@@ -136,7 +139,9 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
                                       )
                                     : CircleAvatar(
                                         backgroundImage: NetworkImage(
-                                          userModel.profilePic,
+                                          AppwriteConstants.imageUrl(
+                                            userModel.profilePic,
+                                          ),
                                         ),
                                         radius: 40,
                                       ),

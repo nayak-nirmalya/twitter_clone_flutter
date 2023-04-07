@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:twitter_clone/constants/appwrite_constants.dart';
 
 import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/tweet/controller/tweet_controller.dart';
@@ -82,8 +83,10 @@ class CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(currentUser.profilePic),
+                            backgroundImage: NetworkImage(
+                              AppwriteConstants.imageUrl(
+                                  currentUser.profilePic),
+                            ),
                             radius: 30,
                           ),
                         ),
