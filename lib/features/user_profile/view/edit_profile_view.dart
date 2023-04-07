@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
+import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
@@ -19,11 +22,23 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
   final nameController = TextEditingController();
   final bioController = TextEditingController();
 
+  File? bannerFile;
+
   @override
   void dispose() {
     super.dispose();
     nameController.dispose();
     bioController.dispose();
+  }
+
+  void selectBannerImage() async {
+    final baner = await pickImage();
+
+    if (baner != null) {
+      setState(() {
+        bannerFile = baner;
+      });
+    }
   }
 
   @override
@@ -49,15 +64,26 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
                   height: 200,
                   child: Stack(
                     children: [
-                      Container(
-                        width: double.infinity,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
+                      GestureDetector(
+                        onTap: selectBannerImage,
+                        child: Container(
+                          width: double.infinity,
+                          height: 150,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: bannerFile != null
+                              ? Image.file(
+                                  bannerFile!,
+                                  fit: BoxFit.fitWidth,
+                                )
+                              : userModel.bannerPic.isEmpty
+                                  ? Container(color: Pallete.blueColor)
+                                  : Image.network(
+                                      userModel.bannerPic,
+                                      fit: BoxFit.fitWidth,
+                                    ),
                         ),
-                        child: userModel.bannerPic.isEmpty
-                            ? Container(color: Pallete.blueColor)
-                            : Image.network(userModel.bannerPic),
                       ),
                       Positioned(
                         bottom: 20,
