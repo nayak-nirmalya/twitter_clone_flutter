@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
+import 'package:twitter_clone/constants/constants.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
+import 'package:twitter_clone/features/tweet/controller/tweet_controller.dart';
+import 'package:twitter_clone/features/tweet/widgets/tweet_card.dart';
+import 'package:twitter_clone/features/user_profile/controller/user_profile_controller.dart';
 import 'package:twitter_clone/features/user_profile/widget/follow_count.dart';
+import 'package:twitter_clone/models/tweet_model.dart';
 import 'package:twitter_clone/models/user_model.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
@@ -120,7 +125,80 @@ class UserProfile extends ConsumerWidget {
                 ),
               ];
             },
-            body: Container(),
+            body: ref.watch(getUserTweetsProvider(userModel.uid)).when(
+                  data: (tweets) {
+                    return ref.watch(getLatestTweetProvider).when(
+                          data: (data) {
+                            final latestTweet = Tweet.fromMap(data.payload);
+
+                            bool isTweetAlreadyPresent = false;
+                            for (final tweetModel in tweets) {
+                              if (tweetModel.id == latestTweet.id) {
+                                isTweetAlreadyPresent = true;
+                                break;
+                              }
+                            }
+
+                            if (!isTweetAlreadyPresent) {
+                              if (data.events.contains(
+                                'databases.*.collections.${AppwriteConstants.tweetsCollection}.documents.*.create',
+                              )) {
+                                tweets.insert(0, Tweet.fromMap(data.payload));
+                              } else if (data.events.contains(
+                                'databases.*.collections.${AppwriteConstants.tweetsCollection}.documents.*.update',
+                              )) {
+                                final startingIndex =
+                                    data.events[0].lastIndexOf('documents.');
+                                final endIndex =
+                                    data.events[0].lastIndexOf('.update');
+
+                                final tweetId = data.events[0]
+                                    .substring(startingIndex + 10, endIndex);
+
+                                var tweet = tweets
+                                    .where((element) => element.id == tweetId)
+                                    .first;
+
+                                final tweetIndex = tweets.indexOf(tweet);
+                                tweets.removeWhere(
+                                    (element) => element.id == tweetId);
+
+                                tweet = Tweet.fromMap(data.payload);
+                                tweets.insert(tweetIndex, tweet);
+                              }
+                            }
+
+                            return Expanded(
+                              child: ListView.builder(
+                                itemCount: tweets.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final tweet = tweets[index];
+                                  return TweetCard(tweet: tweet);
+                                },
+                              ),
+                            );
+                          },
+                          error: (error, stackTrace) => ErrorText(
+                            error: error.toString(),
+                          ),
+                          loading: () {
+                            return Expanded(
+                              child: ListView.builder(
+                                itemCount: tweets.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final tweet = tweets[index];
+                                  return TweetCard(tweet: tweet);
+                                },
+                              ),
+                            );
+                          },
+                        );
+                  },
+                  error: (error, st) => ErrorText(
+                    error: error.toString(),
+                  ),
+                  loading: () => const Loader(),
+                ),
           );
   }
 }

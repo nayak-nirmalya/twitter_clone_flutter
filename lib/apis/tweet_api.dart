@@ -172,7 +172,7 @@ class TweetAPI implements ITweetAPI {
       collectionId: AppwriteConstants.tweetsCollection,
       queries: [
         Query.equal('uid', uid),
-        // Query.orderDesc('tweetedAt'),
+        Query.orderDesc('tweetedAt'),
       ],
     );
 
