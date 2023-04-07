@@ -21,6 +21,7 @@ abstract class IUserAPI {
   FutureEitherVoid updateUserData(UserModel userModel);
   Stream<RealtimeMessage> getLatestUserProfileData();
   FutureEitherVoid followUser(UserModel userModel);
+  FutureEitherVoid addToFollowing(UserModel userModel);
 }
 
 class UserAPI implements IUserAPI {
@@ -115,6 +116,30 @@ class UserAPI implements IUserAPI {
         documentId: userModel.uid,
         data: {
           'followers': userModel.followers,
+        },
+      );
+
+      return right(null);
+    } on AppwriteException catch (e, st) {
+      return left(
+        Failure(e.message ?? 'Unexpected Error Occured!', st),
+      );
+    } catch (e, st) {
+      return left(
+        Failure(e.toString(), st),
+      );
+    }
+  }
+
+  @override
+  FutureEitherVoid addToFollowing(UserModel userModel) async {
+    try {
+      await _db.updateDocument(
+        databaseId: AppwriteConstants.databaseId,
+        collectionId: AppwriteConstants.usersCollection,
+        documentId: userModel.uid,
+        data: {
+          'following': userModel.following,
         },
       );
 
