@@ -11,6 +11,11 @@ class AppwriteConstants {
 
   static const String imagesBucket = "642d18a59355a7af11d5";
 
-  static String imageUrl(String imageId) =>
-      '$endPoint/storage/buckets/$imagesBucket/files/$imageId/view?project=$projectId&mode=admin';
+  static String imageUrl(String imageId) {
+    if (imageId.toLowerCase().contains('www')) {
+      return imageId;
+    } else {
+      return '$endPoint/storage/buckets/$imagesBucket/files/$imageId/view?project=$projectId&mode=admin';
+    }
+  }
 }
