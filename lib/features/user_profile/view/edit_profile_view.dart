@@ -16,6 +16,16 @@ class EditProfileView extends ConsumerStatefulWidget {
 }
 
 class _EditProfileViewState extends ConsumerState<EditProfileView> {
+  final nameController = TextEditingController();
+  final bioController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    nameController.dispose();
+    bioController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final userModel = ref.watch(currentUserDetailsProvider).value;
@@ -23,6 +33,16 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
     return userModel == null
         ? const Loader()
         : Scaffold(
+            appBar: AppBar(
+              title: const Text('Edit Profile'),
+              centerTitle: false,
+              actions: [
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('Save'),
+                ),
+              ],
+            ),
             body: Column(
               children: [
                 SizedBox(
@@ -50,6 +70,22 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    hintText: "Edit Name",
+                    contentPadding: EdgeInsets.all(18),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: bioController,
+                  maxLines: 4,
+                  decoration: const InputDecoration(
+                    hintText: "Edit Bio",
+                    contentPadding: EdgeInsets.all(18),
                   ),
                 ),
               ],
