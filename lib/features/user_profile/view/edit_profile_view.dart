@@ -23,6 +23,7 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
   final bioController = TextEditingController();
 
   File? bannerFile;
+  File? profileFile;
 
   @override
   void dispose() {
@@ -37,6 +38,16 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
     if (baner != null) {
       setState(() {
         bannerFile = baner;
+      });
+    }
+  }
+
+  void selectProfileImage() async {
+    final profileImage = await pickImage();
+
+    if (profileImage != null) {
+      setState(() {
+        profileFile = profileImage;
       });
     }
   }
@@ -88,11 +99,19 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
                       Positioned(
                         bottom: 20,
                         left: 20,
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            userModel.profilePic,
-                          ),
-                          radius: 40,
+                        child: GestureDetector(
+                          onTap: selectProfileImage,
+                          child: profileFile != null
+                              ? CircleAvatar(
+                                  backgroundImage: FileImage(profileFile!),
+                                  radius: 40,
+                                )
+                              : CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    userModel.profilePic,
+                                  ),
+                                  radius: 40,
+                                ),
                         ),
                       ),
                     ],
