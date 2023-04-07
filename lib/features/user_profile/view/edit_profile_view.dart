@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
+import 'package:twitter_clone/features/user_profile/controller/user_profile_controller.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
 class EditProfileView extends ConsumerStatefulWidget {
@@ -19,11 +20,22 @@ class EditProfileView extends ConsumerStatefulWidget {
 }
 
 class _EditProfileViewState extends ConsumerState<EditProfileView> {
-  final nameController = TextEditingController();
-  final bioController = TextEditingController();
+  late TextEditingController nameController;
+  late TextEditingController bioController;
 
   File? bannerFile;
   File? profileFile;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController(
+      text: ref.read(currentUserDetailsProvider).value?.name ?? '',
+    );
+    bioController = TextEditingController(
+      text: ref.read(currentUserDetailsProvider).value?.bio ?? '',
+    );
+  }
 
   @override
   void dispose() {
@@ -55,6 +67,7 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
   @override
   Widget build(BuildContext context) {
     final userModel = ref.watch(currentUserDetailsProvider).value;
+    final isLoading = ref.watch(userProfileControllerProvider);
 
     return userModel == null
         ? const Loader()
@@ -64,77 +77,92 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
               centerTitle: false,
               actions: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    ref
+                        .read(userProfileControllerProvider.notifier)
+                        .updateUserData(
+                          userModel: userModel.copyWith(
+                            bio: bioController.text,
+                            name: nameController.text,
+                          ),
+                          context: context,
+                          bannerFile: bannerFile,
+                          profileFile: profileFile,
+                        );
+                  },
                   child: const Text('Save'),
                 ),
               ],
             ),
-            body: Column(
-              children: [
-                SizedBox(
-                  height: 200,
-                  child: Stack(
+            body: isLoading
+                ? const Loader()
+                : Column(
                     children: [
-                      GestureDetector(
-                        onTap: selectBannerImage,
-                        child: Container(
-                          width: double.infinity,
-                          height: 150,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: bannerFile != null
-                              ? Image.file(
-                                  bannerFile!,
-                                  fit: BoxFit.fitWidth,
-                                )
-                              : userModel.bannerPic.isEmpty
-                                  ? Container(color: Pallete.blueColor)
-                                  : Image.network(
-                                      userModel.bannerPic,
-                                      fit: BoxFit.fitWidth,
-                                    ),
+                      SizedBox(
+                        height: 200,
+                        child: Stack(
+                          children: [
+                            GestureDetector(
+                              onTap: selectBannerImage,
+                              child: Container(
+                                width: double.infinity,
+                                height: 150,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: bannerFile != null
+                                    ? Image.file(
+                                        bannerFile!,
+                                        fit: BoxFit.fitWidth,
+                                      )
+                                    : userModel.bannerPic.isEmpty
+                                        ? Container(color: Pallete.blueColor)
+                                        : Image.network(
+                                            userModel.bannerPic,
+                                            fit: BoxFit.fitWidth,
+                                          ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 20,
+                              left: 20,
+                              child: GestureDetector(
+                                onTap: selectProfileImage,
+                                child: profileFile != null
+                                    ? CircleAvatar(
+                                        backgroundImage:
+                                            FileImage(profileFile!),
+                                        radius: 40,
+                                      )
+                                    : CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                          userModel.profilePic,
+                                        ),
+                                        radius: 40,
+                                      ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Positioned(
-                        bottom: 20,
-                        left: 20,
-                        child: GestureDetector(
-                          onTap: selectProfileImage,
-                          child: profileFile != null
-                              ? CircleAvatar(
-                                  backgroundImage: FileImage(profileFile!),
-                                  radius: 40,
-                                )
-                              : CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    userModel.profilePic,
-                                  ),
-                                  radius: 40,
-                                ),
+                      TextField(
+                        controller: nameController,
+                        decoration: const InputDecoration(
+                          hintText: "Edit Name",
+                          contentPadding: EdgeInsets.all(18),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: bioController,
+                        maxLines: 4,
+                        decoration: const InputDecoration(
+                          hintText: "Edit Bio",
+                          contentPadding: EdgeInsets.all(18),
                         ),
                       ),
                     ],
                   ),
-                ),
-                TextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    hintText: "Edit Name",
-                    contentPadding: EdgeInsets.all(18),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                TextField(
-                  controller: bioController,
-                  maxLines: 4,
-                  decoration: const InputDecoration(
-                    hintText: "Edit Bio",
-                    contentPadding: EdgeInsets.all(18),
-                  ),
-                ),
-              ],
-            ),
           );
   }
 }

@@ -11,7 +11,8 @@ import 'package:twitter_clone/models/tweet_model.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final userProfileControllerProvider = StateNotifierProvider((ref) {
+final userProfileControllerProvider =
+    StateNotifierProvider<UserProfileController, bool>((ref) {
   return UserProfileController(
     userAPI: ref.watch(userAPIProvider),
     tweetAPI: ref.watch(tweetAPIProvider),
@@ -51,6 +52,8 @@ class UserProfileController extends StateNotifier<bool> {
     required File? bannerFile,
     required File? profileFile,
   }) async {
+    state = true;
+
     if (bannerFile != null) {
       final bannerUrl = await _storageAPI.uploadImages([bannerFile]);
       userModel = userModel.copyWith(
@@ -66,6 +69,7 @@ class UserProfileController extends StateNotifier<bool> {
     }
 
     final res = await _userAPI.updateUserData(userModel);
+    state = false;
 
     res.fold(
       (l) => showSnackBar(context, l.message),

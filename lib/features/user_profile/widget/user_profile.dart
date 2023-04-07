@@ -38,13 +38,16 @@ class UserProfile extends ConsumerWidget {
                       Positioned.fill(
                         child: userModel.bannerPic.isEmpty
                             ? Container(color: Pallete.blueColor)
-                            : Image.network(userModel.bannerPic),
+                            : Image.network(
+                                AppwriteConstants.imageUrl(userModel.bannerPic),
+                                fit: BoxFit.fitWidth,
+                              ),
                       ),
                       Positioned(
                         bottom: 0,
                         child: CircleAvatar(
                           backgroundImage: NetworkImage(
-                            userModel.profilePic,
+                            AppwriteConstants.imageUrl(userModel.profilePic),
                           ),
                           radius: 45,
                         ),
