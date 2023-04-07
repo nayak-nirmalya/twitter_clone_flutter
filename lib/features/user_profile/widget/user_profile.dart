@@ -68,17 +68,15 @@ class UserProfile extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(
                               horizontal: 25,
                             ),
-                            side: const BorderSide(
-                              color: Pallete.whiteColor,
-                              width: 1.5,
-                            ),
+                            backgroundColor: Pallete.whiteColor,
                           ),
                           child: Text(
                             currentUser.uid == userModel.uid
                                 ? "Edit Profile"
                                 : 'Follow',
                             style: const TextStyle(
-                              color: Pallete.whiteColor,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),

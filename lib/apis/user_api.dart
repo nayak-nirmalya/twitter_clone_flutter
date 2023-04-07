@@ -20,6 +20,7 @@ abstract class IUserAPI {
   Future<List<model.Document>> searchUserByName(String name);
   FutureEitherVoid updateUserData(UserModel userModel);
   Stream<RealtimeMessage> getLatestUserProfileData();
+  FutureEitherVoid followUser(UserModel userModel);
 }
 
 class UserAPI implements IUserAPI {
@@ -103,5 +104,29 @@ class UserAPI implements IUserAPI {
     return _realtime.subscribe([
       'databases.${AppwriteConstants.databaseId}.collections.${AppwriteConstants.usersCollection}.documents',
     ]).stream;
+  }
+
+  @override
+  FutureEitherVoid followUser(UserModel userModel) async {
+    try {
+      await _db.updateDocument(
+        databaseId: AppwriteConstants.databaseId,
+        collectionId: AppwriteConstants.usersCollection,
+        documentId: userModel.uid,
+        data: {
+          'followers': userModel.followers,
+        },
+      );
+
+      return right(null);
+    } on AppwriteException catch (e, st) {
+      return left(
+        Failure(e.message ?? 'Unexpected Error Occured!', st),
+      );
+    } catch (e, st) {
+      return left(
+        Failure(e.toString(), st),
+      );
+    }
   }
 }

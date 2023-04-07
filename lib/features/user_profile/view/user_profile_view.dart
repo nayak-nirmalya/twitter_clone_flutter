@@ -30,8 +30,6 @@ class UserProfileView extends ConsumerWidget {
                 if (data.events.contains(
                   'databases.*.collections.${AppwriteConstants.usersCollection}.documents.${copyOfUser.uid}.update',
                 )) {
-                  print("HERE");
-                  print(data);
                   copyOfUser = UserModel.fromMap(data.payload);
                 }
                 return UserProfile(userModel: copyOfUser);
