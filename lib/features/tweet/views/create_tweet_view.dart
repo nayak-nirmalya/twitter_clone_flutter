@@ -85,7 +85,8 @@ class CreateTweetScreenState extends ConsumerState<CreateTweetScreen> {
                           child: CircleAvatar(
                             backgroundImage: NetworkImage(
                               AppwriteConstants.imageUrl(
-                                  currentUser.profilePic),
+                                currentUser.profilePic,
+                              ),
                             ),
                             radius: 30,
                           ),
