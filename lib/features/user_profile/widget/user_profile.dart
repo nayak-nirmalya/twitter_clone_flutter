@@ -176,28 +176,38 @@ class UserProfile extends ConsumerWidget {
                               }
                             }
 
-                            return Expanded(
-                              child: ListView.builder(
-                                itemCount: tweets.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  final tweet = tweets[index];
-                                  return TweetCard(tweet: tweet);
-                                },
-                              ),
+                            return Row(
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: tweets.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final tweet = tweets[index];
+                                      return TweetCard(tweet: tweet);
+                                    },
+                                  ),
+                                ),
+                              ],
                             );
                           },
                           error: (error, stackTrace) => ErrorText(
                             error: error.toString(),
                           ),
                           loading: () {
-                            return Expanded(
-                              child: ListView.builder(
-                                itemCount: tweets.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  final tweet = tweets[index];
-                                  return TweetCard(tweet: tweet);
-                                },
-                              ),
+                            return Row(
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: tweets.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final tweet = tweets[index];
+                                      return TweetCard(tweet: tweet);
+                                    },
+                                  ),
+                                ),
+                              ],
                             );
                           },
                         );

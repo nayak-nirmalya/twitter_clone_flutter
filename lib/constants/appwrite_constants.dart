@@ -1,4 +1,5 @@
 class AppwriteConstants {
+  // change to your IP address
   static const String localhost = "192.168.174.224";
 
   static const String databaseId = "64297f926fe94e928c3a";
