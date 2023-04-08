@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:twitter_clone/apis/notification_api.dart';
 import 'package:twitter_clone/apis/storage_api.dart';
 import 'package:twitter_clone/apis/tweet_api.dart';
 import 'package:twitter_clone/core/enums/tweet_type_enum.dart';
@@ -18,6 +19,7 @@ final tweetControllerProvider =
     ref: ref,
     tweetAPI: ref.watch(tweetAPIProvider),
     storageAPI: ref.watch(storageAPIProvider),
+    notificationAPI: ref.watch(),
   );
 });
 
@@ -42,16 +44,20 @@ final getLatestTweetProvider = StreamProvider((ref) {
 });
 
 class TweetController extends StateNotifier<bool> {
-  final TweetAPI _tweetAPI;
+  final NotificationAPI _notificationAPI;
   final StorageAPI _storageAPI;
+  final TweetAPI _tweetAPI;
   final Ref _ref;
+
   TweetController({
     required Ref ref,
     required TweetAPI tweetAPI,
     required StorageAPI storageAPI,
+    required NotificationAPI notificationAPI,
   })  : _ref = ref,
         _tweetAPI = tweetAPI,
         _storageAPI = storageAPI,
+        _notificationAPI = notificationAPI,
         super(false);
 
   Future<List<Tweet>> getTweets() async {
@@ -76,7 +82,9 @@ class TweetController extends StateNotifier<bool> {
     tweet = tweet.copyWith(likes: likes);
     final res = await _tweetAPI.likeTweet(tweet);
 
-    res.fold((l) => null, (r) => null);
+    res.fold((l) => null, (r) {
+      _notificationAPI.createNotification();
+    });
   }
 
   void reShareTweet(
