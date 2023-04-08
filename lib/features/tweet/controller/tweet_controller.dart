@@ -35,6 +35,12 @@ final getReplieToTweetsProvider = FutureProvider.family((ref, Tweet tweet) {
   return tweetController.getRepliesToTweet(tweet);
 });
 
+final getTweetsByHashTagsProvider =
+    FutureProvider.family((ref, String hashTag) {
+  final tweetController = ref.watch(tweetControllerProvider.notifier);
+  return tweetController.getTweetsByHashTags(hashTag);
+});
+
 final getTweetByIdProvider = FutureProvider.family((ref, String id) {
   final tweetController = ref.watch(tweetControllerProvider.notifier);
   return tweetController.getTweetById(id);
@@ -164,6 +170,11 @@ class TweetController extends StateNotifier<bool> {
 
   Future<List<Tweet>> getRepliesToTweet(Tweet tweet) async {
     final docs = await _tweetAPI.getRepliesToTweet(tweet);
+    return docs.map((tweet) => Tweet.fromMap(tweet.data)).toList();
+  }
+
+  Future<List<Tweet>> getTweetsByHashTags(String hashTag) async {
+    final docs = await _tweetAPI.getTweetsByHashTags(hashTag);
     return docs.map((tweet) => Tweet.fromMap(tweet.data)).toList();
   }
 
