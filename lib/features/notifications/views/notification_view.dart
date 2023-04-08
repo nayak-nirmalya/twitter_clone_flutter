@@ -26,8 +26,11 @@ class NotificationView extends ConsumerWidget {
                           if (data.events.contains(
                             'databases.*.collections.${AppwriteConstants.notificationsCollection}.documents.*.create',
                           )) {
-                            notifications.insert(
-                                0, model.Notification.fromMap(data.payload));
+                            final latestNotification =
+                                model.Notification.fromMap(data.payload);
+                            if (latestNotification.uid == currentUser.uid) {
+                              notifications.insert(0, latestNotification);
+                            }
                           }
 
                           return ListView.builder(
