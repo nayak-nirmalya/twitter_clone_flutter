@@ -22,7 +22,29 @@ class SideDrawer extends ConsumerWidget {
                 style: TextStyle(fontSize: 22),
               ),
               onTap: () {},
-            )
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.payment,
+                size: 30,
+              ),
+              title: const Text(
+                'Twitter Blue',
+                style: TextStyle(fontSize: 22),
+              ),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.logout,
+                size: 30,
+              ),
+              title: const Text(
+                'Log Out',
+                style: TextStyle(fontSize: 22),
+              ),
+              onTap: () {},
+            ),
           ],
         ),
       ),
