@@ -1,9 +1,11 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:twitter_clone/constants/constants.dart';
 import 'package:twitter_clone/core/core.dart';
+import 'package:twitter_clone/models/notification_model.dart';
 
 abstract class INotificationAPI {
-  FutureEitherVoid createNotification();
+  FutureEitherVoid createNotification(Notification notification);
 }
 
 class NotificationAPI implements INotificationAPI {
@@ -14,15 +16,13 @@ class NotificationAPI implements INotificationAPI {
   }) : _db = db;
 
   @override
-  FutureEitherVoid createNotification() async {
+  FutureEitherVoid createNotification(Notification notification) async {
     try {
       await _db.createDocument(
         databaseId: AppwriteConstants.databaseId,
         collectionId: AppwriteConstants.notificationsCollection,
-        documentId: userModel.uid,
-        data: {
-          'followers': userModel.followers,
-        },
+        documentId: ID.unique(),
+        data: notification.toMap(),
       );
 
       return right(null);
