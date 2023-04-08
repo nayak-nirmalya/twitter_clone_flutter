@@ -119,7 +119,15 @@ class TweetController extends StateNotifier<bool> {
 
         res2.fold(
           (l) => showSnackBar(context, l.message),
-          (r) => showSnackBar(context, "ReTweeted!"),
+          (r) {
+            _notificationController.createNotification(
+              text: '${currentUser.name} ReTweeted Your Tweet!',
+              postId: tweet.id,
+              notificationType: NotificationType.retweet,
+              uid: tweet.uid,
+            );
+            showSnackBar(context, "ReTweeted!");
+          },
         );
       },
     );
