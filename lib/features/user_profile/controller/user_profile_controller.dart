@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:twitter_clone/apis/tweet_api.dart';
 import 'package:twitter_clone/apis/storage_api.dart';
 import 'package:twitter_clone/apis/user_api.dart';
+
+import 'package:twitter_clone/core/enums/notification_type_enum.dart';
 import 'package:twitter_clone/core/utils.dart';
+
+import 'package:twitter_clone/features/notifications/controller/notification_controller.dart';
+
 import 'package:twitter_clone/models/user_model.dart';
 import 'package:twitter_clone/models/tweet_model.dart';
 
@@ -17,6 +22,7 @@ final userProfileControllerProvider =
     userAPI: ref.watch(userAPIProvider),
     tweetAPI: ref.watch(tweetAPIProvider),
     storageAPI: ref.watch(storageAPIProvider),
+    notificationController: ref.watch(notificationControllerProvider.notifier),
   );
 });
 
@@ -36,14 +42,17 @@ class UserProfileController extends StateNotifier<bool> {
   final UserAPI _userAPI;
   final TweetAPI _tweetAPI;
   final StorageAPI _storageAPI;
+  final NotificationController _notificationController;
 
   UserProfileController({
     required UserAPI userAPI,
     required TweetAPI tweetAPI,
     required StorageAPI storageAPI,
+    required NotificationController notificationController,
   })  : _userAPI = userAPI,
         _tweetAPI = tweetAPI,
         _storageAPI = storageAPI,
+        _notificationController = notificationController,
         super(false);
 
   Future<List<Tweet>> getUserTweets(String uid) async {
@@ -104,7 +113,14 @@ class UserProfileController extends StateNotifier<bool> {
       (l) => showSnackBar(context, l.message),
       (r) async {
         final res2 = await _userAPI.addToFollowing(currentUser);
-        res2.fold((l) => showSnackBar(context, l.message), (r) => null);
+        res2.fold((l) => showSnackBar(context, l.message), (r) {
+          _notificationController.createNotification(
+            text: '${currentUser.name} Followed You!',
+            postId: '',
+            notificationType: NotificationType.follow,
+            uid: user.uid,
+          );
+        });
       },
     );
   }
