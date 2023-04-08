@@ -138,6 +138,7 @@ class TweetController extends StateNotifier<bool> {
     required String text,
     required BuildContext context,
     required String repliedTo,
+    required String repliedToUserId,
   }) {
     if (text.isEmpty) {
       showSnackBar(context, "Please, Enter Something!");
@@ -149,12 +150,14 @@ class TweetController extends StateNotifier<bool> {
         text: text,
         context: context,
         repliedTo: repliedTo,
+        repliedToUserId: repliedToUserId,
       );
     } else {
       _shareTextTweet(
         text: text,
         context: context,
         repliedTo: repliedTo,
+        repliedToUserId: repliedToUserId,
       );
     }
   }
@@ -169,6 +172,7 @@ class TweetController extends StateNotifier<bool> {
     required String text,
     required BuildContext context,
     required String repliedTo,
+    required String repliedToUserId,
   }) async {
     state = true;
     final hashTags = _getHashTagsFromText(text);
@@ -193,14 +197,25 @@ class TweetController extends StateNotifier<bool> {
     );
 
     final res = await _tweetAPI.shareTweet(tweet);
+    res.fold((l) => showSnackBar(context, l.message), (r) {
+      if (repliedToUserId.isNotEmpty) {
+        _notificationController.createNotification(
+          text: '${user.name} Replied to Your Tweet!',
+          postId: r.$id,
+          notificationType: NotificationType.reply,
+          uid: repliedToUserId,
+        );
+      }
+    });
+
     state = false;
-    res.fold((l) => showSnackBar(context, l.message), (r) => null);
   }
 
   void _shareTextTweet({
     required String text,
     required BuildContext context,
     required String repliedTo,
+    required String repliedToUserId,
   }) async {
     state = true;
     final hashTags = _getHashTagsFromText(text);
@@ -224,8 +239,18 @@ class TweetController extends StateNotifier<bool> {
     );
 
     final res = await _tweetAPI.shareTweet(tweet);
+    res.fold((l) => showSnackBar(context, l.message), (r) {
+      if (repliedToUserId.isNotEmpty) {
+        _notificationController.createNotification(
+          text: '${user.name} Replied to Your Tweet!',
+          postId: r.$id,
+          notificationType: NotificationType.reply,
+          uid: repliedToUserId,
+        );
+      }
+    });
+
     state = false;
-    res.fold((l) => showSnackBar(context, l.message), (r) => null);
   }
 
   String _getLinkFromText(String text) {
