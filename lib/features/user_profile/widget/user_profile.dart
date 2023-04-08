@@ -11,6 +11,7 @@ import 'package:twitter_clone/features/user_profile/widget/follow_count.dart';
 import 'package:twitter_clone/models/tweet_model.dart';
 import 'package:twitter_clone/models/user_model.dart';
 import 'package:twitter_clone/theme/pallete.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class UserProfile extends ConsumerWidget {
   final UserModel userModel;
@@ -99,12 +100,23 @@ class UserProfile extends ConsumerWidget {
                   sliver: SliverList(
                     delegate: SliverChildListDelegate(
                       [
-                        Text(
-                          userModel.name,
-                          style: const TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              userModel.name,
+                              style: const TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            if (userModel.isTwitterBlue)
+                              Padding(
+                                padding: const EdgeInsets.only(left: 2.0),
+                                child: SvgPicture.asset(
+                                  AssetsConstants.verifiedIcon,
+                                ),
+                              ),
+                          ],
                         ),
                         Text(
                           '@${userModel.name}',
