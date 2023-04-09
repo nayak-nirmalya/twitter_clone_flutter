@@ -77,44 +77,46 @@ flutter run
 
 ## Screenshots
 
+<div align='center'>
+
 ### Log In / Sign Up Page
 
 <img src="readme_imgs/login_signup.png" width="360">
 
-### SearchResultPreview
+### Tweet Feed
 
-### Install packages
+<img src="readme_imgs/tweet_feed.png" width="360">
 
-```shell
-npm i
-```
+### Tweet Feed with Images & Link Preview
 
-### Setup .env file
+<img src="readme_imgs/link_img_carousel.png" width="360">
 
-```js
-DATABASE_URL=
-NEXTAUTH_JWT_SECRET=
-NEXTAUTH_SECRET=
-```
+### Reply / Comment Page
 
-### Start the app
+<img src="readme_imgs/replied_comment.png" width="360">
 
-```shell
-npm run dev
-```
+### Search Tweet by HashTags
 
-## Available commands
+<img src="readme_imgs/hasttags.png" width="360">
 
-Run Prisma Studio
+### Search User
 
-```shell
-npx prisma studio
-```
+<img src="readme_imgs/search_img.png" width="360">
 
-Running Commands with NPM `npm run [command]`
+### User Profile Page
 
-| command | description                              |
-| :------ | :--------------------------------------- |
-| `dev`   | Starts a development instance of the app |
-| `build` | Build instance of the app                |
-| `start` | Run Build instance of the app            |
+<img src="readme_imgs/profile__page.png" width="360">
+
+### Edit Profile Page
+
+<img src="readme_imgs/edit_profile.png" width="360">
+
+### Notification Tab
+
+<img src="readme_imgs/notification.png" width="360">
+
+### Side Drawer
+
+<img src="readme_imgs/side_drawer.png" width="360">
+
+</div>
