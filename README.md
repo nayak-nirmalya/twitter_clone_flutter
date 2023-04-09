@@ -39,23 +39,47 @@ git clone https://github.com/nayak-nirmalya/twitter_clone_flutter.git
 
 ## Running Project
 
-First, add your Moralis API Key to .env file as shown in .env.example file inside backend folder.
+Install Docker for AppWrite to Work.
 
-cd into 'backend' folder then start express server:
+To Install AppWrite via Docker Run:
 
-```bash
-cd backend
-npm install
-npm run start
+```shell
+docker run -it --rm `
+    --volume /var/run/docker.sock:/var/run/docker.sock `
+    --volume ${pwd}/appwrite:/usr/src/code/appwrite:rw `
+    --entrypoint="install" `
+    appwrite/appwrite:1.2.1
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+After Installation Initiate DataBases from Model and add Attributes and Indexes, also configure databaseId, projectId, collections Ids and for Android Emulator to work properly assign your IPv4 Address to localhost.
+
+Then inside root folder run:
+
+```shell
+flutter run
+```
+
+Select your Device to Run App.
+
+If You Face any Issues while building app. Try running:
+
+```shell
+cd android
+
+./gradlew clean
+./gradlew build
+
+cd ..
+flutter clean
+flutter doctor
+flutter run
+```
 
 ## Screenshots
 
-### HomePagePreview
+### Log In / Sign Up Page
 
-<img src="readme_imgs/login_signup.png" width="480">
+<img src="readme_imgs/login_signup.png" width="360">
 
 ### SearchResultPreview
 
