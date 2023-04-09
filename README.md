@@ -78,6 +78,7 @@ Funcionalities:
 - View Link Preview inside Posts
 - Search User
 - RealTime Updates
+- DataBase Queries
 - Editing Profile Details including Profile/Banner Picture
 - Twitter Blue Verification Tag
 
